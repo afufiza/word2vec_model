@@ -9,10 +9,15 @@ virtualenv venv -p python3.5
 source venv/bin/activate
 ```
 
+Train word2vec and generate files sampleVectors.json and word_vectors.png
+```
+python run.py
+```
+
 Assignment submission(for students)
 ```
 # zip the assignment submission folder
-cd soln/
-zip -r assignment2.zip *.py *.png saved_params_40000.npy sampleVectors.json
+cd assignment2
+sh collect_submission.sh
 cd ..
 ```
