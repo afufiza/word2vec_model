@@ -9,7 +9,9 @@ virtualenv venv -p python3.5
 source venv/bin/activate
 ```
 
-Train word2vec and generate files sampleVectors.json and word_vectors.png
+Train word2vec and generate files *sampleVectors.json* and *word_vectors.png*
+
+**Note: Do not change the hyperparameters values in run.py script**  
 ```
 python run.py
 ```
