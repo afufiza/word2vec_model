@@ -16,7 +16,7 @@ pip install -r requirement.txt
 
 Train word2vec and generate files *sampleVectors.json* and *word_vectors.png*
 
-**Note: Do not change the hyperparameters values in run.py script**  
+**Note: Do not change the hyperparameter values in run.py script**  
 ```
 python run.py
 ```
