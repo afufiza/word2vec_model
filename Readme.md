@@ -29,7 +29,5 @@ python test_sample_vectors.py
 Assignment submission(for students)
 ```
 # zip the assignment submission folder
-cd assignment2
 sh collect_submission.sh
-cd ..
 ```
