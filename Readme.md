@@ -11,7 +11,7 @@ source venv/bin/activate
 
 Install all requirements
 ```
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 Train word2vec and generate files *sampleVectors.json* and *word_vectors.png*
