@@ -50,6 +50,10 @@ def naiveSoftmaxLossAndGradient(
                      (dJ / dv_c in the pdf handout)
     gradOutsideVecs -- the gradient with respect to all the outside word vectors
                     (dJ / dU)
+                    
+    Note:
+     we usually use column vector convention (i.e., vectors are in column form) for vectors in matrix U and V (in the handout)
+     but for ease of implementation/programming we usually use row vectors (representing vectors in row form).
     """
 
     ### YOUR CODE HERE
