@@ -203,7 +203,7 @@ def test_naiveSoftmaxLossAndGradient():
 
 
 def test_sigmoid():
-    print("\n\n\t\t\ttest softmax\t\t\t")
+    print("\n\n\t\t\ttest sigmoid\t\t\t")
 
     x = inputs['test_sigmoid']['x']
     s = sigmoid(x)
