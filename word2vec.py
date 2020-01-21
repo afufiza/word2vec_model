@@ -56,6 +56,10 @@ def naiveSoftmaxLossAndGradient(
      but for ease of implementation/programming we usually use row vectors (representing vectors in row form).
     """
 
+    ### Please use the provided softmax function (imported earlier in this file)
+    ### This numerically stable implementation helps you avoid issues pertaining
+    ### to integer overflow.
+    
     ### YOUR CODE HERE
     ### END YOUR CODE
 
