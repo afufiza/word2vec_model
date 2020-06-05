@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
+import os
 import random
+
+import matplotlib
 import numpy as np
+
 from utils.treebank import StanfordSentiment
 from utils.utils import dump
-import matplotlib
-import os
 
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
@@ -24,10 +26,10 @@ assert sys.version_info[1] >= 5
 random.seed(314)
 dataset = StanfordSentiment()
 tokens = dataset.tokens()
-nWords = len(tokens)
+n_words = len(tokens)
 
 # We are going to train 10-dimensional vectors for this assignment
-dimVectors = 10
+dim_vectors = 10
 
 # Context size
 C = 5
@@ -36,48 +38,48 @@ C = 5
 random.seed(31415)
 np.random.seed(9265)
 
-startTime = time.time()
-wordVectors = np.concatenate(
-    ((np.random.rand(nWords, dimVectors) - 0.5) /
-     dimVectors, np.zeros((nWords, dimVectors))),
+start_time = time.time()
+word_vectors = np.concatenate(
+    ((np.random.rand(n_words, dim_vectors) - 0.5) /
+     dim_vectors, np.zeros((n_words, dim_vectors))),
     axis=0)
-wordVectors = sgd(
+word_vectors = sgd(
     lambda vec: word2vec_sgd_wrapper(skipgram, tokens, vec, dataset, C,
-                                     negSamplingLossAndGradient),
-    wordVectors, 0.3, 40000, None, False, PRINT_EVERY=10)
+                                     neg_sampling_loss_and_gradient),
+    word_vectors, 0.3, 40000, None, False, PRINT_EVERY=10)
 # Note that normalization is not called here. This is not a bug,
 # normalizing during training loses the notion of length.
 
 print("sanity check: cost at convergence should be around or below 10")
-print("training took %d seconds" % (time.time() - startTime))
+print("training took %d seconds" % (time.time() - start_time))
 
 # concatenate the input and output word vectors
-wordVectors = np.concatenate(
-    (wordVectors[:nWords, :], wordVectors[nWords:, :]),
+word_vectors = np.concatenate(
+    (word_vectors[:n_words, :], word_vectors[n_words:, :]),
     axis=0)
 
-visualizeWords = [
+visualize_words = [
     "great", "cool", "brilliant", "wonderful", "well", "amazing",
     "worth", "sweet", "enjoyable", "boring", "bad", "dumb",
     "annoying", "female", "male", "queen", "king", "man", "woman", "rain", "snow",
     "hail", "coffee", "tea"]
 
 # dimensionality reduction
-visualizeIdx = [tokens[word] for word in visualizeWords]
-visualizeVecs = wordVectors[visualizeIdx, :]
+visualize_idx = [tokens[word] for word in visualize_words]
+visualize_vecs = word_vectors[visualize_idx, :]
 
 # save word vectors for evaluation
-sampleVectors = {word: list(vec) for word, vec in zip(visualizeWords, visualizeVecs)}
-sampleVectorsPath = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sampleVectors.json")
-dump(sampleVectors, sampleVectorsPath)
+sample_vectors = {word: list(vec) for word, vec in zip(visualize_words, visualize_vecs)}
+sample_vectors_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "sample_vectors.json")
+dump(sample_vectors, sample_vectors_path)
 
-temp = (visualizeVecs - np.mean(visualizeVecs, axis=0))
-covariance = 1.0 / len(visualizeIdx) * temp.T.dot(temp)
+temp = (visualize_vecs - np.mean(visualize_vecs, axis=0))
+covariance = 1.0 / len(visualize_idx) * temp.T.dot(temp)
 U, S, V = np.linalg.svd(covariance)
 coord = temp.dot(U[:, 0:2])
 
-for i in range(len(visualizeWords)):
-    plt.text(coord[i, 0], coord[i, 1], visualizeWords[i],
+for i in range(len(visualize_words)):
+    plt.text(coord[i, 0], coord[i, 1], visualize_words[i],
              bbox=dict(facecolor='green', alpha=0.1))
 
 plt.xlim((np.min(coord[:, 0]), np.max(coord[:, 0])))

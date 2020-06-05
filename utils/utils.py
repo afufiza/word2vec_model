@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import numpy as np
 import json
+
+import numpy as np
 
 
 def dump(obj, path):
@@ -16,7 +17,7 @@ def load(path):
     return obj
 
 
-def normalizeRows(x):
+def normalize_rows(x):
     """ Row normalization function
 
     Implement a function that normalizes each row of a matrix to have

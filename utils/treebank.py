@@ -68,22 +68,22 @@ class StanfordSentiment:
 
         return self._sentences
 
-    def numSentences(self):
-        if hasattr(self, "_numSentences") and self._numSentences:
-            return self._numSentences
+    def num_sentences(self):
+        if hasattr(self, "_num_sentences") and self._num_sentences:
+            return self._num_sentences
         else:
-            self._numSentences = len(self.sentences())
-            return self._numSentences
+            self._num_sentences = len(self.sentences())
+            return self._num_sentences
 
-    def allSentences(self):
+    def all_sentences(self):
         if hasattr(self, "_allsentences") and self._allsentences:
             return self._allsentences
 
         sentences = self.sentences()
-        rejectProb = self.rejectProb()
+        reject_prob = self.reject_prob()
         tokens = self.tokens()
         allsentences = [[w for w in s
-                         if 0 >= rejectProb[tokens[w]] or random.random() >= rejectProb[tokens[w]]]
+                         if 0 >= reject_prob[tokens[w]] or random.random() >= reject_prob[tokens[w]]]
                         for s in sentences * 30]
 
         allsentences = [s for s in allsentences if len(s) > 1]
@@ -92,8 +92,8 @@ class StanfordSentiment:
 
         return self._allsentences
 
-    def getRandomContext(self, C=5):
-        allsent = self.allSentences()
+    def get_random_context(self, C=5):
+        allsent = self.all_sentences()
         sentID = random.randint(0, len(allsent) - 1)
         sent = allsent[sentID]
         wordID = random.randint(0, len(sent) - 1)
@@ -108,7 +108,7 @@ class StanfordSentiment:
         if len(context) > 0:
             return centerword, context
         else:
-            return self.getRandomContext(C)
+            return self.get_random_context(C)
 
     def sent_labels(self):
         if hasattr(self, "_sent_labels") and self._sent_labels:
@@ -137,9 +137,9 @@ class StanfordSentiment:
                 splitted = line.split("|")
                 labels[int(splitted[0])] = float(splitted[1])
 
-        sent_labels = [0.0] * self.numSentences()
+        sent_labels = [0.0] * self.num_sentences()
         sentences = self.sentences()
-        for i in range(self.numSentences()):
+        for i in range(self.num_sentences()):
             sentence = sentences[i]
             full_sent = " ".join(sentence).replace('-lrb-', '(').replace('-rrb-', ')')
             sent_labels[i] = labels[dictionary[full_sent]]
@@ -165,7 +165,7 @@ class StanfordSentiment:
         self._split = split
         return self._split
 
-    def getRandomTrainSentence(self):
+    def get_random_train_sentence(self):
         split = self.dataset_split()
         sentId = split[0][random.randint(0, len(split[0]) - 1)]
         return self.sentences()[sentId], self.categorify(self.sent_labels()[sentId])
@@ -182,67 +182,67 @@ class StanfordSentiment:
         else:
             return 4
 
-    def getDevSentences(self):
-        return self.getSplitSentences(2)
+    def get_dev_sentences(self):
+        return self.get_split_sentences(2)
 
-    def getTestSentences(self):
-        return self.getSplitSentences(1)
+    def get_test_sentences(self):
+        return self.get_split_sentences(1)
 
-    def getTrainSentences(self):
-        return self.getSplitSentences(0)
+    def get_train_sentences(self):
+        return self.get_split_sentences(0)
 
-    def getSplitSentences(self, split=0):
+    def get_split_sentences(self, split=0):
         ds_split = self.dataset_split()
         return [(self.sentences()[i], self.categorify(self.sent_labels()[i])) for i in ds_split[split]]
 
-    def sampleTable(self):
-        if hasattr(self, '_sampleTable') and self._sampleTable is not None:
-            return self._sampleTable
+    def sample_table(self):
+        if hasattr(self, '_sample_table') and self._sample_table is not None:
+            return self._sample_table
 
-        nTokens = len(self.tokens())
-        samplingFreq = np.zeros((nTokens,))
-        self.allSentences()
+        n_tokens = len(self.tokens())
+        sampling_freq = np.zeros((n_tokens,))
+        self.all_sentences()
         i = 0
-        for w in range(nTokens):
+        for w in range(n_tokens):
             w = self._revtokens[i]
             if w in self._tokenfreq:
                 freq = 1.0 * self._tokenfreq[w]
-                # Reweigh
+                # Reweight
                 freq = freq ** 0.75
             else:
                 freq = 0.0
-            samplingFreq[i] = freq
+            sampling_freq[i] = freq
             i += 1
 
-        samplingFreq /= np.sum(samplingFreq)
-        samplingFreq = np.cumsum(samplingFreq) * self.tablesize
+        sampling_freq /= np.sum(sampling_freq)
+        sampling_freq = np.cumsum(sampling_freq) * self.tablesize
 
-        self._sampleTable = [0] * self.tablesize
+        self._sample_table = [0] * self.tablesize
 
         j = 0
         for i in range(self.tablesize):
-            while i > samplingFreq[j]:
+            while i > sampling_freq[j]:
                 j += 1
-            self._sampleTable[i] = j
+            self._sample_table[i] = j
 
-        return self._sampleTable
+        return self._sample_table
 
-    def rejectProb(self):
-        if hasattr(self, '_rejectProb') and self._rejectProb is not None:
-            return self._rejectProb
+    def reject_prob(self):
+        if hasattr(self, '_reject_prob') and self._reject_prob is not None:
+            return self._reject_prob
 
         threshold = 1e-5 * self._wordcount
 
-        nTokens = len(self.tokens())
-        rejectProb = np.zeros((nTokens,))
-        for i in range(nTokens):
+        n_tokens = len(self.tokens())
+        reject_prob = np.zeros((n_tokens,))
+        for i in range(n_tokens):
             w = self._revtokens[i]
             freq = 1.0 * self._tokenfreq[w]
-            # Reweigh
-            rejectProb[i] = max(0, 1 - np.sqrt(threshold / freq))
+            # Reweight
+            reject_prob[i] = max(0, 1 - np.sqrt(threshold / freq))
 
-        self._rejectProb = rejectProb
-        return self._rejectProb
+        self._reject_prob = reject_prob
+        return self._reject_prob
 
-    def sampleTokenIdx(self):
-        return self.sampleTable()[random.randint(0, self.tablesize - 1)]
+    def sample_token_idx(self):
+        return self.sample_table()[random.randint(0, self.tablesize - 1)]

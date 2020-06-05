@@ -3,11 +3,12 @@
 # Save parameters every a few SGD iterations as fail-safe
 SAVE_PARAMS_EVERY = 5000
 
-import pickle
 import glob
-import random
-import numpy as np
 import os.path as op
+import pickle
+import random
+
+import numpy as np
 
 
 def load_saved_params():
@@ -39,7 +40,7 @@ def save_params(iter, params):
         pickle.dump(random.getstate(), f)
 
 
-def sgd(f, x0, step, iterations, postprocessing=None, useSaved=False,
+def sgd(f, x0, step, iterations, postprocessing=None, use_saved=False,
         PRINT_EVERY=10):
     """ Stochastic Gradient Descent
 
@@ -64,7 +65,7 @@ def sgd(f, x0, step, iterations, postprocessing=None, useSaved=False,
     # Anneal learning rate every several iterations
     ANNEAL_EVERY = 20000
 
-    if useSaved:
+    if use_saved:
         start_iter, oldx, state = load_saved_params()
         if start_iter > 0:
             x0 = oldx
@@ -97,7 +98,7 @@ def sgd(f, x0, step, iterations, postprocessing=None, useSaved=False,
                 exploss = .95 * exploss + .05 * loss
             print("iter %d: %f" % (iter, exploss))
 
-        if iter % SAVE_PARAMS_EVERY == 0 and useSaved:
+        if iter % SAVE_PARAMS_EVERY == 0 and use_saved:
             save_params(iter, x)
 
         if iter % ANNEAL_EVERY == 0:

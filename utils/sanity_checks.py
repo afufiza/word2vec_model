@@ -1,6 +1,8 @@
-import numpy as np
 import random
-from utils.utils import normalizeRows
+
+import numpy as np
+
+from utils.utils import normalize_rows
 
 
 def dummy():
@@ -9,18 +11,18 @@ def dummy():
 
     dataset = type('dummy', (), {})()
 
-    def dummySampleTokenIdx():
+    def dummy_sample_token_idx():
         return random.randint(0, 4)
 
-    def getRandomContext(C):
+    def get_random_context(C):
         tokens = ["a", "b", "c", "d", "e"]
         return tokens[random.randint(0, 4)], \
                [tokens[random.randint(0, 4)] for i in range(2 * C)]
 
-    dataset.sampleTokenIdx = dummySampleTokenIdx
-    dataset.getRandomContext = getRandomContext
+    dataset.sample_token_idx = dummy_sample_token_idx
+    dataset.get_random_context = get_random_context
 
-    dummy_vectors = normalizeRows(np.random.randn(10, 3))
+    dummy_vectors = normalize_rows(np.random.randn(10, 3))
     dummy_tokens = dict([("a", 0), ("b", 1), ("c", 2), ("d", 3), ("e", 4)])
 
     return dataset, dummy_vectors, dummy_tokens
