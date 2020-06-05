@@ -39,3 +39,12 @@ python test_sample_vectors.py
 # zip the assignment submission folder
 sh collect_submission.sh
 ```
+**In case you have trouble with the provided `collect_submission.sh` script, submit the following files:**
+```
+run.py
+sample_vectors.json
+sgd.py
+test_sample_vectors.py
+word2vec.py
+word_vectors.png
+```
