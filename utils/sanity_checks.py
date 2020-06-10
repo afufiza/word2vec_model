@@ -30,14 +30,14 @@ def dummy():
 
 inputs = {
     'test_word2vec': {
-        'currentCenterWord': "c",
-        'windowSize': 3,
-        'outsideWords': ["a", "b", "e", "d", "b", "c"]
+        'current_center_word': "c",
+        'window_size': 3,
+        'outside_words': ["a", "b", "e", "d", "b", "c"]
     },
     'test_naivesoftmax': {
-        'centerWordVec': np.array([-0.27323645, 0.12538062, 0.95374082]).astype(float),
-        'outsideWordIdx': 3,
-        'outsideVectors': np.array([[-0.6831809, -0.04200519, 0.72904007],
+        'center_word_vec': np.array([-0.27323645, 0.12538062, 0.95374082]).astype(float),
+        'outside_word_idx': 3,
+        'outside_vectors': np.array([[-0.6831809, -0.04200519, 0.72904007],
                                     [0.18289107, 0.76098587, -0.62245591],
                                     [-0.61517874, 0.5147624, -0.59713884],
                                     [-0.33867074, -0.80966534, -0.47931635],
