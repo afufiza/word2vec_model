@@ -225,7 +225,7 @@ def test_word2vec():
 
     print("==== Gradient check for skip-gram with naive_softmax_loss_and_gradient ====")
     gradcheck_naive(lambda vec: word2vec_sgd_wrapper(
-        skipgram, dummy_tokens, vec, dataset, 5, neg_sampling_loss_and_gradient),
+        skipgram, dummy_tokens, vec, dataset, 5, naive_softmax_loss_and_gradient),
                     dummy_vectors, "naive_softmax_loss_and_gradient Gradient")
 
     print("\n\n\t\t\tSkip-Gram with naive_softmax_loss_and_gradient\t\t\t")
