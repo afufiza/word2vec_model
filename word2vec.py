@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import numpy as np
 from utils.gradcheck import gradcheck_naive
 from utils.sanity_checks import *
 from utils.utils import softmax
